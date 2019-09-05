@@ -1,6 +1,6 @@
 <!-- Large desktop banner. Must be used with "Large banner limit and switch" mixin -->
 
- <!-- CREATED AT: 2019-09-05T01:12:24+00:00 -->
+ <!-- CREATED AT: 2019-09-05T01:16:07+00:00 -->
 
 <style>
 /* Hide when editing */
@@ -1364,6 +1364,17 @@ button.frb-nag-btn:hover {
     font-size: 18px;
 }
 
+.frb-amt-monthly-other-fee-info {
+    display: none;
+    font-size: 12px;
+    text-align: center;
+    margin: 8px auto 0;
+    line-height: 16px;
+    color: #54595D;
+    max-width: 215px;
+}
+
+
 /* steps */
 #frb-form .frb-step {
     position: absolute;
@@ -1639,6 +1650,10 @@ button.frb-nag-btn:hover {
                     <div class="frb-amt-monthly">
                         <label for="frb-amt-monthly-other-input">{{{FR2015_translations,enter-monthly-amt}}}</label>
                         <input id="frb-amt-monthly-other-input" name="otherMonthlyAmount" type="text" inputmode="decimal" size="3" autocomplete="off" value tabindex="-1">
+                        <div class="frb-amt-monthly-other-fee-info">
+                            + <span class="frb-amt-monthly-other-fee">$0.00</span> to cover the transaction fees.
+                            Thank you for your generosity!
+                        </div>
                     </div>
                     <div class="frb-error frb-error-smallamount">{{{FR2015_translations,smallamount-error}}}</div>
                     <div class="frb-error frb-error-bigamount">{{{FR2015_translations,bigamount-error}}}</div>
@@ -2042,6 +2057,9 @@ $(function() {
 
     $('.frb-step-monthly-diff-amt .frb-back').on('click', function(e) {
         validAmount = 1;
+
+        $('.frb-amt-monthly-other-fee-info').hide();
+
         frb.activateCTA();
         frb.toggleMonthly(false);
         frb.showStep('upsell');
@@ -2063,7 +2081,17 @@ $(function() {
         if ( frb.validateMonthlyAmount() ) {
             validAmount = 1;
             frb.updateUpsellAsk();
+
+            // New
+            if ($('#frb-ptf-checkbox').prop('checked'))
+                $('.frb-amt-monthly-other-fee-info').show();
+
         } else {
+
+            // New
+            if ($('#frb-ptf-checkbox').prop('checked'))
+                $('.frb-amt-monthly-other-fee-info').hide();
+
             validAmount = 0;
         }
         frb.activateCTA();
